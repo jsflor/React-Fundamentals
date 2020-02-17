@@ -1,4 +1,5 @@
 import React from 'react'
+import styles from './TarjetaFruta.module.css'
 
 export default class TarjetaFruta extends React.Component {
     constructor(props) {
@@ -24,8 +25,10 @@ export default class TarjetaFruta extends React.Component {
         this.setState({ cantidad: 0 })
     }
     render() {
+        const hasItems = this.state.cantidad > 0;
+        const classNames = `${styles.card} ${ hasItems ? styles['card-active'] : ''}`;
         return (
-            <div>
+            <div className={classNames}>
                 <h3>{this.props.name}</h3>
                 <hr/>
                 <p>${this.props.price}</p>
@@ -33,7 +36,8 @@ export default class TarjetaFruta extends React.Component {
                 <button onClick={this.agregar}>+</button>
                 <button onClick={this.quitar}>-</button>
                 <button onClick={this.limpiar}>x</button>
+                <p>Total: ${this.state.cantidad * this.props.price}</p>
             </div>
-        )
+        );
     }
 }
