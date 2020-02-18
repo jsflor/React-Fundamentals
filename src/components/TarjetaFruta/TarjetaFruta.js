@@ -16,13 +16,19 @@ export default class TarjetaFruta extends React.Component {
         });
     }
     agregar(){
-        this.setState({ cantidad: this.state.cantidad + 1 })
+        this.setState((prevState) => ({
+            cantidad: prevState.cantidad + 1
+        }));
     }
     quitar(){
-        this.setState({ cantidad: this.state.cantidad - 1 })
+        this.setState((prevState) => ({
+            cantidad: prevState.cantidad - 1
+        }));
     }
     limpiar(){
-        this.setState({ cantidad: 0 })
+        this.setState((prevState) => ({
+            cantidad: 0
+        }));
     }
     render() {
         const hasItems = this.state.cantidad > 0;
