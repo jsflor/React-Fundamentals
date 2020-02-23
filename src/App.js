@@ -14,11 +14,15 @@ class Children extends React.Component {
     }
     handleData = () => {
         this.props.onSendData(this.state);
+        this.setState(() => ({
+            name: '',
+            age: ''
+        }));
     }
     render() {
         return (
             <div className='child'>
-                <h3>Child Element</h3>
+                {this.props.children}
                 <input onChange={this.handleChange} name='name' value={this.state.name} placeholder='name...' />
                 <input onChange={this.handleChange} name='age' value={this.state.age} placeholder='age...' />
                 <button onClick={this.handleData}>send data</button>
@@ -44,7 +48,10 @@ class App extends React.Component {
                 <h2>Parent Element</h2>
                 <p>Name: {this.state.name}</p>
                 <p>Age: {this.state.age}</p>
-                <Children onSendData={this.handleData} />
+                <button onClick={() => this.setState({ name: '', age:'' })}>clear data</button>
+                <Children onSendData={this.handleData}>
+                    <h3><em>Child</em> Element</h3>
+                </Children>
             </div>
         );
     }
