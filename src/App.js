@@ -1,22 +1,50 @@
 import React from 'react'
-import TarjetaFruta from './components/TarjetaFruta';
-import TarjetaFrutaII from './components/TarjetaFrutaII';
+import './App.css'
+
+class Children extends React.Component {
+    state = {
+        name: '',
+        age: ''
+    }
+    handleChange = (e) => {
+        e.persist();
+        this.setState(() => ({
+            [e.target.name]: e.target.value
+        }));
+    }
+    handleData = () => {
+        this.props.onSendData(this.state);
+    }
+    render() {
+        return (
+            <div className='child'>
+                <h3>Child Element</h3>
+                <input onChange={this.handleChange} name='name' value={this.state.name} placeholder='name...' />
+                <input onChange={this.handleChange} name='age' value={this.state.age} placeholder='age...' />
+                <button onClick={this.handleData}>send data</button>
+            </div>
+        );
+    }
+}
 
 class App extends React.Component {
     state = {
-        name: 'Manzana',
-        price: 4
+        name: '',
+        age: ''
+    }
+    handleData = (data) => {
+        this.setState(() => ({
+            name: data.name,
+            age: data.age
+        }));
     }
     render() {
-        const otrosDatos = {
-            name: 'Naranja',
-            price: 3
-        };
         return(
-            <div>
-                <TarjetaFruta name='Kiwi' price={2} />
-                <TarjetaFrutaII name='Pera' price={5} {...otrosDatos}/>
-                <TarjetaFrutaII {...this.state}/>
+            <div className='parent'>
+                <h2>Parent Element</h2>
+                <p>Name: {this.state.name}</p>
+                <p>Age: {this.state.age}</p>
+                <Children onSendData={this.handleData} />
             </div>
         );
     }
