@@ -1,8 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import PropTypes from 'prop-types'
 import './App.css'
 
 class Portal extends React.Component {
+    static propTypes = {
+        children: PropTypes.node,
+        show: PropTypes.bool
+    }
     render() {
         const { children, show } = this.props;
         if(!show){
@@ -46,6 +51,11 @@ class Children extends React.Component {
             </div>
         );
     }
+}
+
+Children.propTypes = {
+    children: PropTypes.node,
+    onSendData: PropTypes.func
 }
 
 class App extends React.Component {
