@@ -3,11 +3,18 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './App.css'
 
+const noop = () => {}
+
 class Portal extends React.Component {
     static propTypes = {
         children: PropTypes.node,
         show: PropTypes.bool
     }
+    
+    static defaultProps = {
+        children: <></>
+    }
+
     render() {
         const { children, show } = this.props;
         if(!show){
@@ -56,6 +63,11 @@ class Children extends React.Component {
 Children.propTypes = {
     children: PropTypes.node,
     onSendData: PropTypes.func
+}
+
+Children.defaultProps = {
+    children: <></>,
+    onSendData: noop
 }
 
 class App extends React.Component {
