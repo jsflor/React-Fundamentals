@@ -1,5 +1,20 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import './App.css'
+
+class Portal extends React.Component {
+    render() {
+        const { children, show } = this.props;
+        if(!show){
+            return null
+        }
+        return ReactDOM.createPortal((
+            <div className='portal'>
+                {children}
+            </div>
+        ), document.getElementById('portal-root'));
+    }
+}
 
 class Children extends React.Component {
     state = {
@@ -36,7 +51,8 @@ class Children extends React.Component {
 class App extends React.Component {
     state = {
         name: '',
-        age: ''
+        age: '',
+        show: false
     }
     handleData = ({ name, age }) => {
         this.setState(() => ({
@@ -47,8 +63,11 @@ class App extends React.Component {
     clearData = () => {
         this.setState(() => ({ name: '', age:'' }))
     }
+    togglePortal = () => {
+        this.setState((prevState) => ({ show: !prevState.show }));
+    }
     render() {
-        const { name, age } = this.state;
+        const { name, age, show } = this.state;
         return(
             <div className='parent'>
                 <h2>Parent Element</h2>
@@ -58,6 +77,12 @@ class App extends React.Component {
                 <Children onSendData={this.handleData}>
                     <h3><em>Child</em> Element</h3>
                 </Children>
+                <Portal show={show}>
+                    <>
+                        <p>This is a Portal!</p>
+                    </>
+                </Portal>
+                <button onClick={this.togglePortal}>toggle portal</button>
             </div>
         );
     }
