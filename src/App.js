@@ -1,113 +1,116 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types'
-import './App.css'
 
-const noop = () => {}
+const shopInfo = {
+    name: 'Sebdev',
+    owner: 'Sebastian',
+    location: 'Mad',
+    country: 'ESP',
+    zipcode: '28400',
+    telefon: '+34654666555'
+};
 
-class Portal extends React.Component {
-    static propTypes = {
-        children: PropTypes.node,
-        show: PropTypes.bool
+const productsInfo = [
+    {
+        id: 1,
+        name: 'Jeans',
+        price: 20,
+        colors: [
+            {
+                color: 'red'
+            },
+            {
+                color: 'blue'
+            },
+            {
+                color: 'green'
+            }
+        ]
+    },
+    {
+        id: 2,
+        name: 'Tshirt',
+        price: 15,
+        colors: [
+            {
+                color: 'black'
+            },
+            {
+                color: 'white'
+            },
+            {
+                color: 'red'
+            }
+        ]
+    },
+    {
+        id: 3,
+        name: 'Boots',
+        price: 45,
+        colors: [
+            {
+                color: 'red'
+            },
+            {
+                color: 'blue'
+            },
+            {
+                color: 'green'
+            }
+        ]
+    },
+    {
+        id: 4,
+        name: 'Scarf',
+        price: 15,
+        colors: [
+            {
+                color: 'yellow'
+            },
+            {
+                color: 'grey'
+            },
+            {
+                color: 'blue'
+            }
+        ]
     }
-    
-    static defaultProps = {
-        children: <></>
-    }
+];
 
-    render() {
-        const { children, show } = this.props;
-        if(!show){
-            return null
-        }
-        return ReactDOM.createPortal((
-            <div className='portal'>
-                {children}
-            </div>
-        ), document.getElementById('portal-root'));
-    }
-}
-
-class Children extends React.Component {
+export default class App extends React.Component {
     state = {
-        name: '',
-        age: ''
+        store: shopInfo,
+        items: productsInfo
     }
-    handleChange = (e) => {
-        e.persist();
-        const { target: { name, value } } = e;
-        this.setState(() => ({
-            [name]: value
-        }));
-    }
-    handleData = () => {
-        this.props.onSendData(this.state);
-        this.setState(() => ({
-            name: '',
-            age: ''
-        }));
-    }
-    render() {
-        const { name, age } = this.state;
+    render(){
+        const { store, items } = this.state;
+        const keys = Object.keys(store);
         return (
-            <div className='child'>
-                {this.props.children}
-                <input onChange={this.handleChange} name='name' value={name} placeholder='name...' />
-                <input onChange={this.handleChange} name='age' value={age} placeholder='age...' />
-                <button onClick={this.handleData}>send data</button>
-            </div>
+            <>
+                <ul>
+                    {
+                        keys.map((key, i) => (
+                            <li key={i}><strong>{ key }</strong>: { store[key] }</li>
+                        ))
+                    }
+                </ul>
+                <ul>
+                    {
+                        items.map((item) => (
+                            <li key={item.id}>
+                                <p style={{marginBottom: 0}}>{ item.price }$ { item.name }</p>
+                                Available colors:
+                                <ul>
+                                    {
+                                        item.colors.map((color, i) => (
+                                            <li key={i}>{ color.color }</li>
+                                        ))
+                                    }
+                                </ul>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </>
         );
     }
 }
-
-Children.propTypes = {
-    children: PropTypes.node,
-    onSendData: PropTypes.func
-}
-
-Children.defaultProps = {
-    children: <></>,
-    onSendData: noop
-}
-
-class App extends React.Component {
-    state = {
-        name: '',
-        age: '',
-        show: false
-    }
-    handleData = ({ name, age }) => {
-        this.setState(() => ({
-            name: name,
-            age: age
-        }));
-    }
-    clearData = () => {
-        this.setState(() => ({ name: '', age:'' }))
-    }
-    togglePortal = () => {
-        this.setState((prevState) => ({ show: !prevState.show }));
-    }
-    render() {
-        const { name, age, show } = this.state;
-        return(
-            <div className='parent'>
-                <h2>Parent Element</h2>
-                <p>Name: {name}</p>
-                <p>Age: {age}</p>
-                <button onClick={this.clearData}>clear data</button>
-                <Children onSendData={this.handleData}>
-                    <h3><em>Child</em> Element</h3>
-                </Children>
-                <Portal show={show}>
-                    <>
-                        <p>This is a Portal!</p>
-                    </>
-                </Portal>
-                <button onClick={this.togglePortal}>toggle portal</button>
-            </div>
-        );
-    }
-}
-
-export default App;
