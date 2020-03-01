@@ -1,251 +1,80 @@
 import React from 'react'
-import styles from './App.module.css'
+import Chart from 'chart.js'
 
-const shopInfo = {
-    name: 'Sebdev',
-    owner: 'Sebastian',
-    location: 'Mad',
-    country: 'ESP',
-    zipcode: '28400',
-    telefon: '+34654666555'
-};
-
-const productsInfo = [
-    {
-        id: 1,
-        name: 'Jeans',
-        price: 20,
-        colors: [
-            {
-                color: 'red'
-            },
-            {
-                color: 'blue'
-            },
-            {
-                color: 'green'
-            }
-        ]
-    },
-    {
-        id: 2,
-        name: 'Tshirt',
-        price: 15,
-        colors: [
-            {
-                color: 'black'
-            },
-            {
-                color: 'white'
-            },
-            {
-                color: 'red'
-            }
-        ]
-    },
-    {
-        id: 3,
-        name: 'Boots',
-        price: 45,
-        colors: [
-            {
-                color: 'red'
-            },
-            {
-                color: 'blue'
-            },
-            {
-                color: 'green'
-            }
-        ]
-    },
-    {
-        id: 4,
-        name: 'Scarf',
-        price: 15,
-        colors: [
-            {
-                color: 'yellow'
-            },
-            {
-                color: 'grey'
-            },
-            {
-                color: 'blue'
-            }
-        ]
-    }
-];
-
-const images = [
-    {
-      author: {
-        name: 'Vlad Bagacian',
-        avatar: 'https://images.pexels.com/users/avatars/381880/vlad-bagacian-302.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/1368388/pexels-photo-1368388.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 153,
-      id: 1
-    },
-    {
-      author: {
-        name: 'Moreno MatkoviÄ‡',
-        avatar: 'https://images.pexels.com/users/avatars/1265479/moreno-matkovic-149.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/2779539/pexels-photo-2779539.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 214,
-      id: 2
-    },
-    {
-      author: {
-        name: 'Jarod Lovekamp',
-        avatar: 'https://images.pexels.com/users/avatars/1263347/jarod-lovekamp-411.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/2404444/pexels-photo-2404444.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 985,
-      id: 3
-    },
-    {
-      author: {
-        name: 'Xandro Vandewalle',
-        avatar: 'https://images.pexels.com/users/avatars/1431801/xandro-vandewalle-530.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/2763239/pexels-photo-2763239.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 124,
-      id: 4
-    },
-    {
-      author: {
-        name: 'Two Dreamers',
-        avatar: 'https://images.pexels.com/users/avatars/1190917/two-dreamers-438.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/2717087/pexels-photo-2717087.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 987,
-      id: 5
-    },
-    {
-      author: {
-        name: 'Luis Quintero',
-        avatar: 'https://images.pexels.com/users/avatars/447123/luis-quintero-294.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/1408196/pexels-photo-1408196.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 147,
-      id: 6
-    },
-    {
-      author: {
-        name: 'Tobias BjÃ¸rkli',
-        avatar: 'https://images.pexels.com/users/avatars/706370/tobias-bjorkli-371.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/1940041/pexels-photo-1940041.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 387,
-      id: 7
-    },
-    {
-      author: {
-        name: 'Renato Abati',
-        avatar: 'https://images.pexels.com/users/avatars/963082/renato-abati-706.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/2768877/pexels-photo-2768877.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 143,
-      id: 8
-    },
-    {
-      author: {
-        name: 'Vlad Bagacian',
-        avatar: 'https://images.pexels.com/users/avatars/381880/vlad-bagacian-302.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/1368388/pexels-photo-1368388.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 721,
-      id: 9
-    },
-    {
-      author: {
-        name: 'Brayden Law',
-        avatar: 'https://images.pexels.com/users/avatars/851295/brayden-law-840.jpeg?w=256&h=256&fit=crop&crop=faces'
-      },
-      source: 'https://images.pexels.com/photos/1829191/pexels-photo-1829191.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400',
-      views: 637,
-      id: 10
-    }
-  ]
-
-const Image = ({ image }) => (
-    <div className={styles.card}>
-      <img
-        src={image.source}
-        alt='Imagen'
-        className={styles.image}
-      />
-      <div className={styles.footer}>
-        <img
-          src={image.author.avatar}
-          alt='Avatar'
-          className={styles.avatar}
-        />
-        <div>
-          {image.author.name}
-        </div>
-        <div>
-          {image.views}
-        </div>
-      </div>
+const FancyInput = React.forwardRef((props, ref) => (
+    <div>
+        <input ref={ref} />
+        <button onClick={props.onFocus}>Focus</button>
+        <button onClick={props.onBlur}>Blur</button>
     </div>
-  )
+));
 
 export default class App extends React.Component {
-    state = {
-        store: shopInfo,
-        items: productsInfo,
-        selectedItem: {}
+    constructor() {
+        super();
+        this.puntero = React.createRef();
+        this.grafica = React.createRef()
     }
-    onSelectProduct = (item) => {
-        this.setState(() => ({
-            selectedItem: item
-        }));
+    componentDidMount(){
+        this.onFocus();
+        const ctx = this.grafica.current.getContext('2d')
+        const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [2, 10, 12, 6, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+        })
     }
-    render(){
-        const { store, items, selectedItem } = this.state;
-        const keys = Object.keys(store);
+    onFocus = () => {
+        this.puntero.current.focus();
+    }
+    onBlur = () => {
+        this.puntero.current.blur();
+    }
+    render() {
         return (
             <>
-                <ul>
-                    {
-                        keys.map((key, i) => (
-                            <li key={i}><strong>{ key }</strong>: { store[key] }</li>
-                        ))
-                    }
-                </ul>
-
-                <ul>
-                    {
-                        items.map((item) => (
-                            <li onClick={this.onSelectProduct.bind(this, item)} key={item.id} style={{
-                                color: selectedItem.name === item.name
-                                ? 'red'
-                                : '#000'
-                            }}>
-                                <p style={{marginBottom: 0}}>{ item.price }$ { item.name }</p>
-                                Available colors:
-                                <ul>
-                                    {
-                                        item.colors.map((color, i) => (
-                                            <li key={i}>{ color.color }</li>
-                                        ))
-                                    }
-                                </ul>
-                            </li>
-                        ))
-                    }
-                </ul>
-
-                <div className={styles.images}>
-                    {images.map(image => (
-                    <Image
-                        image={image}
-                        key={image.id}
-                    />
-                    ))}
+                <FancyInput
+                    ref={this.puntero}
+                    onFocus={this.onFocus}
+                    onBlur={this.onBlur}
+                />
+                <div>
+                    <canvas
+                    ref={this.grafica}
+                    width='400'
+                    height='400'
+                    ></canvas>
                 </div>
             </>
         );
