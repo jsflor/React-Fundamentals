@@ -1,81 +1,154 @@
 import React from 'react'
-import Chart from 'chart.js'
 
-const FancyInput = React.forwardRef((props, ref) => (
-    <div>
-        <input ref={ref} />
-        <button onClick={props.onFocus}>Focus</button>
-        <button onClick={props.onBlur}>Blur</button>
-    </div>
-));
+class InputNoControlado extends React.Component {
+    constructor(){
+        super();
+        this.name = React.createRef();
+        this.email = React.createRef();
+    }
+    handleClick = () => {
+        const { onSendData } = this.props;
+        const name = this.name.current.value;
+        const email = this.email.current.value;
+        onSendData({ name, email });
+    }
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const { onSendData } = this.props;
+        const name = event.target[0].value;
+        const email = event.target[1].value;
+        onSendData({ name, email });
+    }
+    render(){
+        return(
+            <>
+                <input ref={this.name}  placeholder='Name...' />
+                <input ref={this.email}  placeholder='Email...' />
+                <button onClick={this.handleClick}>Send</button>
+                <hr />
+                <form onSubmit={this.handleSubmit}>
+                    <p><label htmlFor='name'>Name: </label><input placeholder='Name...' id='name' /></p>
+                    <p><label htmlFor='email'>Email: </label><input placeholder='Email...' id='email' /></p>
+                    <button>Send</button>
+                </form>
+            </>
+        );
+    }
+}
+
+class InputControlado extends React.Component {
+    state = {
+      text: '',
+      color: '#E8E8E8'
+    }
+  
+    handleChange = (event) => {
+      const { onChange, name } = this.props;
+      const text = event.target.value;
+      let color = 'green';
+  
+      if (text.trim() === '') {
+        color = '#E8E8E8';
+      }
+  
+      if (text.trim() !== '' && text.length < 5) {
+        color = 'red';
+      }
+  
+      this.setState({ text, color });
+
+      onChange(name, text);
+    }
+  
+    render () {
+      const { color, text } = this.state;
+      const styles = {
+        border: `1px solid ${color}`,
+        padding: '0.3em 0.6em',
+        outline: 'none'
+      };
+      return (
+        <input
+          type='text'
+          value={text}
+          onChange={this.handleChange}
+          style={styles}
+        />
+      )
+    }
+}
+
+class Select extends React.Component {
+    constructor(){
+        super();
+        this.state = {
+            tech: 'React'
+        }
+    }
+    
+    handleChange = (event) => {
+    this.setState({
+        tech: event.target.value
+    });
+    }
+
+    render () {
+        const { tech } = this.state;
+    return (
+        <div>
+            <h2> Etiqueta Select {tech}</h2>
+            <form>
+                <select value={tech} onChange={this.handleChange}>
+                <option value="Angular">Angular</option>
+                <option value="React">React</option>
+                <option value="Vue">Vue</option>
+                <option value="Vanilla">Vanilla</option>
+                </select>
+            </form>
+        </div>
+    )
+    }
+}
+
 
 export default class App extends React.Component {
-    constructor() {
+    constructor(){
         super();
-        this.puntero = React.createRef();
-        this.grafica = React.createRef()
-    }
-    componentDidMount(){
-        this.onFocus();
-        const ctx = this.grafica.current.getContext('2d')
-        const myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [2, 10, 12, 6, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
+        this.state = {
+            name: '',
+            email: ''
         }
+    }
+    handleData = (data) => {
+        console.log(data);
+    }
+    update = (name, text) => {
+        this.setState({
+          [name]: text
         })
     }
-    onFocus = () => {
-        this.puntero.current.focus();
-    }
-    onBlur = () => {
-        this.puntero.current.blur();
-    }
     render() {
-        return (
+        const { name, email } = this.state;
+        return(
             <>
-                <FancyInput
-                    ref={this.puntero}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
+                <h2>Inputs No Controlados</h2>
+                <InputNoControlado onSendData={this.handleData}/>
+
+                <h2>Inputs Controlados</h2>
+                <InputControlado
+                    onChange={this.update}
+                    placeholder='Nombre Completo'
+                    name='name'
                 />
-                <div>
-                    <canvas
-                    ref={this.grafica}
-                    width='400'
-                    height='400'
-                    ></canvas>
-                </div>
+                <InputControlado
+                    onChange={this.update}
+                    placeholder='Tu Email'
+                    name='email'
+                />
+                <h3>Nombre: {name}</h3>
+                <h3>Email: {email}</h3>
+
+                <Select />
             </>
         );
     }
