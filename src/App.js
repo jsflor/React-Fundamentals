@@ -82,29 +82,71 @@ class Select extends React.Component {
     constructor(){
         super();
         this.state = {
-            tech: 'React'
+            tech: 'React',
+            techs: [ 'Vue' ],
+            active: true
         }
     }
     
     handleChange = (event) => {
-    this.setState({
-        tech: event.target.value
-    });
+        this.setState({
+            tech: event.target.value
+        });
+    }
+
+    handleChangeMultiple = (event) => {
+        const techs = Array.from(
+            event.target.selectedOptions,
+            (option) => option.value
+        );
+        this.setState({ techs });
+    }
+
+    handleCheckbox = (event) => {
+        this.setState({
+            active: event.target.checked
+        });
     }
 
     render () {
-        const { tech } = this.state;
+        const { tech, techs, active } = this.state;
     return (
         <div>
-            <h2> Etiqueta Select {tech}</h2>
+            <h2>Etiqueta Select {tech}</h2>
             <form>
                 <select value={tech} onChange={this.handleChange}>
-                <option value="Angular">Angular</option>
-                <option value="React">React</option>
-                <option value="Vue">Vue</option>
-                <option value="Vanilla">Vanilla</option>
+                    <option value="Angular">Angular</option>
+                    <option value="React">React</option>
+                    <option value="Vue">Vue</option>
+                    <option value="Vanilla">Vanilla</option>
                 </select>
             </form>
+            <h2>Etiqueta Select  Multiple</h2>
+            <form>
+                <select
+                    value={techs}
+                    onChange={this.handleChangeMultiple}
+                    multiple
+                >
+                    <option value="Angular">Angular</option>
+                    <option value="React">React</option>
+                    <option value="Vue">Vue</option>
+                    <option value="Vanilla">Vanilla</option>
+                </select>
+            </form>
+            <ul>
+                { techs.map((tech, i) => <li key={i}>{tech}</li>) }
+            </ul>
+            {
+                active && (
+                    <h2>Checkbox </h2>
+                )
+            }
+            <input
+                type="checkbox"
+                checked={active}
+                onChange={this.handleCheckbox}  
+            />
         </div>
     )
     }
