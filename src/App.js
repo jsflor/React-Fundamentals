@@ -121,7 +121,7 @@ export default class App extends React.Component {
                 {
                     movies && (
                         <div>
-                            <ul>
+                            <ul style={{listStyleType: 'none'}}>
                                 {
                                     movies.map((mov) =>(
                                         <li
