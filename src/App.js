@@ -31,7 +31,6 @@ export default class App extends React.Component {
             movie: {},
             isMovieLoading: false,
             movieLoaded: false,
-            query: '',
             movies: []
         };
         this.searchMovie = React.createRef();
@@ -47,13 +46,11 @@ export default class App extends React.Component {
     handleChange = (event) => {
         const query = event.target.value;
         if(query.length > 2){
-            this.setState(() => ({ query: query }));
-            this.handleQuery();
+            this.handleQuery(query);
         }
     }
 
-    handleQuery = async () => {
-        const { query } = this.state;
+    handleQuery = async (query) => {
         const url = 'http://www.omdbapi.com/?apikey=460ba76d';
         try {
             const movies = await axios.get(url, {
