@@ -1,4 +1,112 @@
-import React from 'react'
+import React from 'react';
+import faker from 'faker';
+
+class Contador extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            num: this.props.num
+        }
+    }
+
+    static getDerivedStateFromProps (nextProps, prevState) {
+        // if (prevState.num !== nextProps.num) {
+        //   return {
+        //     num: nextProps.num
+        //   }
+        // }
+        if (prevState.num < nextProps.num) {
+            return {
+                num: nextProps.num
+            };
+        } else {
+            return {
+                num: prevState.num
+            };
+        }
+    }
+
+    add = () => {
+        this.setState(state => ({
+            num: state.num + 1
+        }));
+    };
+
+    render () {
+        const { num } = this.state;
+        return (
+            <div>
+                <hr />
+                <button onClick={this.add}>
+                    Clicks ( { num } )
+                </button>
+            </div>
+        )
+    }
+}
+
+const chatStyle = {
+    width: 230,
+    height: 300,
+    border: '1px solid gray',
+    overflow: 'auto',
+    fontFamily: 'monospace'
+};
+const messageStyle = {
+    padding: '1em',
+    borderBottom: '1px solid #DDD'
+};
+const avatarStyle = {
+    width: 50,
+    height: 50,
+    borderRadius: '50%'
+};
+class Chat extends React.Component {
+    constructor(props) {
+        super(props);
+        this.box = React.createRef();
+    }
+
+    getSnapshotBeforeUpdate () {
+        const box = this.box.current;
+        return box.scrollTop + box.offsetHeight >= box.scrollHeight;
+
+    }
+
+    componentDidUpdate (prevProps, prevState, snapshot) {
+        const box = this.box.current;
+        if (snapshot) {
+            box.scrollTop = box.scrollHeight
+        }
+
+    }
+
+    render () {
+        return (
+            <div
+                style={chatStyle}
+                ref={this.box}
+            >
+                {this.props.list.map(item => (
+                    <div
+                        key={item.id}
+                        style={messageStyle}
+                    >
+                        <p>{ item.message }</p>
+                        <div>
+                            { item.name }
+                        </div>
+                        <img
+                            src={item.avatar}
+                            alt='Avatar'
+                            style={avatarStyle}
+                        />
+                    </div>
+                ))}
+            </div>
+        );
+    }
+}
 
 class UserDetails extends React.Component {
     constructor(props) {
@@ -50,7 +158,6 @@ class UserDetails extends React.Component {
     }
 }
 
-
 class Events extends React.Component {
     constructor(props) {
         super(props);
@@ -82,7 +189,9 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 1
+            id: 1,
+            list: [],
+            numero: 0
         }
     }
     componentDidMount () {
@@ -96,12 +205,38 @@ export default class App extends React.Component {
         }));
     };
 
+    addMessage = () => {
+        // crear mensaje falso
+        const message = {
+            id: faker.random.uuid(),
+            name: faker.name.findName(),
+            avatar: faker.image.avatar(),
+            message: faker.hacker.phrase()
+        };
+        // agregarlo a la lista
+        this.setState(state => ({
+            list: [
+                ...state.list,
+                message
+            ]
+        }));
+    };
+
+    handleChange = (e) => {
+        let numero = parseInt(e.target.value);
+        if (isNaN(numero)) {
+            numero = 0;
+        }
+        this.setState({ numero });
+    };
+
     render () {
-        const { id } = this.state;
+        const { id, list, numero } = this.state;
         return (
             <div>
                 <h1>componentDidMount</h1>
                 <Events />
+
                 <h1>componentDidUpdate</h1>
                 <h4>ID: { id }</h4>
                 <button onClick={this.aumentar}>
@@ -109,6 +244,21 @@ export default class App extends React.Component {
                 </button>
                 <UserDetails
                     userId={id}
+                />
+
+                <h1>getSnapShotBeforeUpdate</h1>
+                <Chat
+                    list={list}
+                />
+                <button onClick={this.addMessage}>
+                    NEW MESSAGE
+                </button>
+
+                <h1>getDerivedStateFromProps</h1>
+                <h4>{ numero }</h4>
+                <input type="text" onChange={this.handleChange}/>
+                <Contador
+                    num={numero}
                 />
             </div>
         )
