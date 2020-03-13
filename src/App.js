@@ -1,6 +1,105 @@
 import React from 'react';
 import faker from 'faker';
 
+/*componentWillUnmount*/
+class Timer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            time: 0,
+            isPlaying: true
+        };
+        this.tick = null;
+    }
+
+    componentDidMount () {
+        this.play()
+    }
+
+    componentWillUnmount () {
+        // Limpiar intervals
+        // Limpiar event listeners
+        // Ejecutar algun metodo para que
+        // limpie algo de el padre
+        this.props.onDestoy();
+        clearInterval(this.tick)
+    }
+
+    play = () => {
+        this.setState({ isPlaying: true });
+
+        this.tick = setInterval(() => {
+            this.setState(state => ({
+                time: state.time + 1
+            }));
+        }, 1000);
+    };
+
+    pause = () => {
+        this.setState({ isPlaying: false });
+        clearInterval(this.tick)
+    };
+
+    toggle = () => {
+        if (this.state.isPlaying) {
+            this.pause()
+        } else {
+            this.play()
+        }
+    };
+
+    render () {
+        const { time, isPlaying } = this.state;
+
+        return (
+            <div>
+                <h1>{ time }</h1>
+                <button onClick={this.toggle}>
+                    { isPlaying ? 'pause' : 'play' }
+                </button>
+            </div>
+        )
+    }
+}
+
+const itemStyles = {
+    padding: '1em',
+    borderBottom: '1px solid #CCC',
+    marginTop: '0.4em'
+};
+
+/*shouldComponentUpdate && PureComponent*/
+class Item extends React.PureComponent  {
+    handleClick = () => {
+        this.props.onRemove(this.props.item)
+    };
+
+    /*shouldComponentUpdate (nextProps, nextState) {
+        if (nextProps.item.id !== this.props.item.id) {
+            return true;
+        }
+        return false;
+    }*/
+
+    render () {
+        const { item } = this.props;
+
+        console.log('Render ðŸ”¥ ' + item.text);
+
+        return (
+            <div style={itemStyles}>
+                <button onClick={this.handleClick}>
+                    x
+                </button>
+                <span>
+          { item.text }
+        </span>
+            </div>
+        )
+    }
+}
+
+/*getDerivedStateFromProps*/
 class Contador extends React.Component {
     constructor(props) {
         super(props);
@@ -61,6 +160,7 @@ const avatarStyle = {
     height: 50,
     borderRadius: '50%'
 };
+/*getSnapshotBeforeUpdate*/
 class Chat extends React.Component {
     constructor(props) {
         super(props);
@@ -108,6 +208,7 @@ class Chat extends React.Component {
     }
 }
 
+/*componentDidUpdate*/
 class UserDetails extends React.Component {
     constructor(props) {
         super(props);
@@ -158,6 +259,7 @@ class UserDetails extends React.Component {
     }
 }
 
+/*componentDidMount*/
 class Events extends React.Component {
     constructor(props) {
         super(props);
@@ -191,7 +293,10 @@ export default class App extends React.Component {
         this.state = {
             id: 1,
             list: [],
-            numero: 0
+            numero: 0,
+            list2nd: [],
+            mostrar: true,
+            message: ''
         }
     }
     componentDidMount () {
@@ -230,8 +335,42 @@ export default class App extends React.Component {
         this.setState({ numero });
     };
 
+    agregar = (e) => {
+        e.preventDefault();
+        const text = e.target[0].value;
+        const id = Math.random().toString(16);
+        const pendiente = { text, id };
+
+        this.setState(state => ({
+            list2nd: [
+                ...state.list2nd,
+                pendiente
+            ]
+        }));
+
+        e.target[0].value = ''
+    };
+
+    eliminar = (item) => {
+        this.setState(state => ({
+            list2nd: state.list2nd.filter(_item => {
+                return item.id !== _item.id
+            })
+        }));
+    };
+
+    desmontar = () => {
+        this.setState({ mostrar: false })
+    };
+
+    handleDestroy = () => {
+        this.setState({
+            message: 'El componente contador fue destruido'
+        });
+    };
+
     render () {
-        const { id, list, numero } = this.state;
+        const { id, list, numero, list2nd, mostrar, message } = this.state;
         return (
             <div>
                 <h1>componentDidMount</h1>
@@ -260,6 +399,30 @@ export default class App extends React.Component {
                 <Contador
                     num={numero}
                 />
+
+                <h1>shouldComponentUpdate</h1>
+                <form onSubmit={this.agregar}>
+                    <input type="text" placeholder='Ingresa tu pendiente' />
+                    <button>
+                        Agregar
+                    </button>
+                </form>
+                <div>
+                    {list2nd.map(item => (
+                        <Item
+                            key={item.id}
+                            item={item}
+                            onRemove={this.eliminar}
+                        />
+                    ))}
+                </div>
+
+                <h1>componentWillUnmount</h1>
+                <h4>{ message }</h4>
+                <button onClick={this.desmontar}>
+                    Desmontar
+                </button>
+                { mostrar && <Timer onDestoy={this.handleDestroy} /> }
             </div>
         )
     }
