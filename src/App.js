@@ -84,7 +84,7 @@ class Item extends React.PureComponent  {
     render () {
         const { item } = this.props;
 
-        console.log('Render ðŸ”¥ ' + item.text);
+        console.log('Render ' + item.text);
 
         return (
             <div style={itemStyles}>
