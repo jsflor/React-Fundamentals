@@ -1,4 +1,10 @@
 import React from 'react';
+import ParentComponent from "./ParentComponent";
+import ObserverPattern from "./ObserverPattern";
+import ApiContext from "./ApiContext";
+import RenderProp from "./RenderProp";
+import HOC from "./HOC";
+import HOCWithConfig from "./HOCWithConfig";
 
 const Header = () => {
     const subtitleStyles = {
@@ -21,8 +27,6 @@ const Header = () => {
             </div>
             <div style={subtitleStyles}>
                 Metodos de Instancia
-                <span role='img' aria-label='flame' >
-        </span>
             </div>
         </header>
     )
@@ -71,6 +75,18 @@ class App extends React.Component {
                 <button onClick={this.handleClick}>
                     Padre
                 </button>
+                <hr/>
+                <ParentComponent/>
+                <hr/>
+                <ObserverPattern/>
+                <hr/>
+                <ApiContext/>
+                <hr/>
+                <RenderProp/>
+                <hr/>
+                <HOC/>
+                <hr/>
+                <HOCWithConfig/>
             </div>
         )
     }
