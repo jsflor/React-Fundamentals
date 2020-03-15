@@ -1,95 +1,105 @@
-import React from 'react';
-import ParentComponent from "./ParentComponent";
-import ObserverPattern from "./ObserverPattern";
-import ApiContext from "./ApiContext";
-import RenderProp from "./RenderProp";
-import HOC from "./HOC";
-import HOCWithConfig from "./HOCWithConfig";
+import React, { useState } from 'react'
+import UseEffect from "./UseEffect";
 
 const Header = () => {
-    const subtitleStyles = {
-        fontWeight: 'bold'
-    };
-
-    const headerStyles  = {
-        margin: '0.6em',
-        borderRadius: '0.3em',
-        border: '1px solid #d2d2d2',
-        padding: '2em 0.4em',
-        fontFamily: 'monospace',
-        fontSize: '17px'
+    const styles = {
+        background: 'linear-gradient(20deg, #6813cb, #2575fc)',
+        textAlign: 'center',
+        borderRadius: '0.2em',
+        color: '#FFF',
+        padding: '0.3em',
+        margin: '0.3em',
+        fontSize: '14px'
     };
 
     return (
-        <header style={headerStyles}>
-            <div>
-                Comunicacion entre componentes
-            </div>
-            <div style={subtitleStyles}>
-                Metodos de Instancia
-            </div>
+        <header style={styles}>
+            <h1>
+                Hook useState
+            </h1>
         </header>
     )
 };
 
-class Hijo extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: '****'
-        }
-    }
+const App = () => {
+    const [ clicks, setClicks ] = useState(0);
+    const [ isActive, setActive ] = useState(false);
+    /*const [ state, setState ] = useState({
+        clicks: 0,
+        title: ''
+    });*/
 
-    dispatchAlert = (e, message = 'Alert desde el Hijo') => {
-        // alert(message);
-        this.setState({ message });
+    const addClicks = () => {
+        setClicks(clicks + 1)
     };
-
-    render () {
-        return (
-            <div>
-                <h2>{ this.state.message }</h2>
-                <button onClick={this.dispatchAlert}>
-                    Hijo
-                </button>
-            </div>
-        )
-    }
-}
-
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.hijo = React.createRef();
-    }
-
-    handleClick = () => {
-        this.hijo.current.dispatchAlert(null, 'Hola desde el Padre');
+    const toggle = () => {
+        setActive(!isActive)
     };
-
-    render () {
-        return (
-            <div>
-                <Header />
-                <Hijo ref={this.hijo} />
-                <button onClick={this.handleClick}>
-                    Padre
+    /*const merge = (nextState) => {
+        setState({
+            ...state,
+            ...nextState
+        })
+    };
+    const addClicks = () => {
+        merge({
+            clicks: state.clicks + 1
+        })
+    };
+    const handleInput = (e) => {
+        const title = e.target.value
+        merge({
+            title
+        })
+    };*/
+    return (
+        <div>
+            { isActive && <Header /> }
+            <button onClick={addClicks}>
+                Clicks ({ clicks })
+            </button>
+            <button onClick={toggle}>
+                { isActive ? 'Desactivar' : 'Activar' }
+            </button>
+            {
+                /*<input
+                    type="text"
+                    value={state.title}
+                    onChange={handleInput}
+                />
+                <button onClick={addClicks}>
+                Clicks ({ state.clicks })
                 </button>
-                <hr/>
-                <ParentComponent/>
-                <hr/>
-                <ObserverPattern/>
-                <hr/>
-                <ApiContext/>
-                <hr/>
-                <RenderProp/>
-                <hr/>
-                <HOC/>
-                <hr/>
-                <HOCWithConfig/>
-            </div>
-        )
-    }
-}
+                <h3>{ state.title }</h3>*/
+            }
+            <hr/>
+            <UseEffect/>
+        </div>
+    )
+};
 
-export default App
+// class App extends Component {
+//   state = {
+//     clicks: 0
+//   }
+
+//   addClicks = () => {
+//     this.setState(state => ({
+//       clicks: state.clicks + 1
+//     }))
+//   }
+
+//   render () {
+//     const { clicks } = this.state
+//     return (
+//       <div>
+//         <Header />
+//         <button onClick={this.addClicks}>
+//           Clicks ({ clicks })
+//         </button>
+//       </div>
+//     )
+//   }
+// }
+
+export default App;
