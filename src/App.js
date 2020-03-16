@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import UseEffect from "./UseEffect";
+import UseLayoutEffect from "./UseLayoutEffect ";
+import UseContext from "./UseContext ";
+import UseRef from "./UseRef";
+import Debounce from "./Debounce";
 
 const Header = () => {
     const styles = {
@@ -74,6 +78,14 @@ const App = () => {
             }
             <hr/>
             <UseEffect/>
+            <hr/>
+            <UseLayoutEffect/>
+            <hr/>
+            <UseContext/>
+            <hr/>
+            <UseRef/>
+            <hr/>
+            <Debounce/>
         </div>
     )
 };
