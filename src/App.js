@@ -4,6 +4,8 @@ import UseLayoutEffect from "./UseLayoutEffect ";
 import UseContext from "./UseContext ";
 import UseRef from "./UseRef";
 import Debounce from "./Debounce";
+import UseImperativeHandle from "./UseImperativeHandle";
+import UseReducer from "./UseReducer ";
 
 const Header = () => {
     const styles = {
@@ -86,6 +88,10 @@ const App = () => {
             <UseRef/>
             <hr/>
             <Debounce/>
+            <hr/>
+            <UseImperativeHandle/>
+            <hr/>
+            <UseReducer/>
         </div>
     )
 };
