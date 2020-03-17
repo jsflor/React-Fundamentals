@@ -6,6 +6,7 @@ import UseRef from "./UseRef";
 import Debounce from "./Debounce";
 import UseImperativeHandle from "./UseImperativeHandle";
 import UseReducer from "./UseReducer ";
+import Memo from "./ReactMemo";
 
 const Header = () => {
     const styles = {
@@ -92,6 +93,8 @@ const App = () => {
             <UseImperativeHandle/>
             <hr/>
             <UseReducer/>
+            <hr/>
+            <Memo/>
         </div>
     )
 };
