@@ -1,24 +1,5 @@
 import React, { useState, useContext } from 'react'
-
-const Header = () => {
-    const styles = {
-        background: 'linear-gradient(20deg, #6813cb, #2575fc)',
-        textAlign: 'center',
-        borderRadius: '0.2em',
-        color: '#FFF',
-        padding: '0.3em',
-        margin: '0.3em',
-        fontSize: '14px'
-    };
-
-    return (
-        <header style={styles}>
-            <h1>
-                Hook useContext
-            </h1>
-        </header>
-    )
-};
+import Header from "./Header";
 
 // { Provider, Consumer }
 const MyContext = React.createContext();
@@ -69,7 +50,7 @@ const UseContext = () => {
             addNum
         }}>
             <div>
-                <Header />
+                <Header title={"Hook useContext"} />
                 <button onClick={addNum}>
                     App ( {num} )
                 </button>

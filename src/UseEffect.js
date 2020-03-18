@@ -1,24 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
-const Header = () => {
-    const styles = {
-        background: 'linear-gradient(20deg, #6813cb, #2575fc)',
-        textAlign: 'center',
-        borderRadius: '0.2em',
-        color: '#FFF',
-        padding: '0.3em',
-        margin: '0.3em',
-        fontSize: '14px'
-    };
-
-    return (
-        <header style={styles}>
-            <h1>
-                Hook useEffect
-            </h1>
-        </header>
-    )
-};
+import Header from "./Header";
 
 const UseEffect = () => {
     const [ clicks, setClicks ] = useState(0);
@@ -47,7 +28,7 @@ const UseEffect = () => {
 
     return (
         <div>
-            <Header />
+            <Header title={"Hook useEffect"} />
             <button onClick={add}>
                 Clicks ({ clicks })
             </button>

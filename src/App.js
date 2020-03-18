@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Header from "./Header";
 import UseEffect from "./UseEffect";
 import UseLayoutEffect from "./UseLayoutEffect ";
 import UseContext from "./UseContext ";
@@ -7,26 +8,10 @@ import Debounce from "./Debounce";
 import UseImperativeHandle from "./UseImperativeHandle";
 import UseReducer from "./UseReducer ";
 import Memo from "./ReactMemo";
-
-const Header = () => {
-    const styles = {
-        background: 'linear-gradient(20deg, #6813cb, #2575fc)',
-        textAlign: 'center',
-        borderRadius: '0.2em',
-        color: '#FFF',
-        padding: '0.3em',
-        margin: '0.3em',
-        fontSize: '14px'
-    };
-
-    return (
-        <header style={styles}>
-            <h1>
-                Hook useState
-            </h1>
-        </header>
-    )
-};
+import ReactMemoMan from "./ReactMemoManuaj";
+import UseCallback from "./UseCallback";
+import UseCallbackDep from "./UseCallbackDependencies";
+import UseMemoPerfomance from "./UseMemoPerformance";
 
 const App = () => {
     const [ clicks, setClicks ] = useState(0);
@@ -61,7 +46,7 @@ const App = () => {
     };*/
     return (
         <div>
-            { isActive && <Header /> }
+            { isActive && <Header title={"Hook useState"} /> }
             <button onClick={addClicks}>
                 Clicks ({ clicks })
             </button>
@@ -95,6 +80,14 @@ const App = () => {
             <UseReducer/>
             <hr/>
             <Memo/>
+            <hr/>
+            <ReactMemoMan/>
+            <hr/>
+            <UseCallback/>
+            <hr/>
+            <UseCallbackDep/>
+            <hr/>
+            <UseMemoPerfomance/>
         </div>
     )
 };

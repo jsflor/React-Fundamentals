@@ -22,7 +22,26 @@ const Title = React.memo(({ text }) => {
     )
 });
 
-const Memo = () => {
+
+const TitleNested = React.memo(
+    ({ info }) => {
+        console.log('%cRender <TitleNested />', 'color: purple');
+
+        return (
+            <h1>
+                { info.text }
+            </h1>
+        )
+    },
+    (prevProps, nextProps) => {
+        // Si retorna true no se renderiza
+        // Si renorna false esta si se renderiza
+        // console.log(prevProps, nextProps)
+        return prevProps.info.text === nextProps.info.text
+    }
+);
+
+const ReactMemoMan = () => {
     const [ title, setTitle ] = useState('');
     const [ count, setCount ] = useState(0);
 
@@ -36,7 +55,7 @@ const Memo = () => {
 
     return (
         <div>
-            <Header title={"React.memo"} />
+            <Header title={React.memo} />
             <input
                 type='text'
                 onChange={handleInput}
@@ -46,8 +65,13 @@ const Memo = () => {
             </button>
             <Counter count={count} />
             <Title text={title} />
+            <TitleNested
+                info={{
+                    text: title
+                }}
+            />
         </div>
     )
 };
 
-export default Memo;
+export default ReactMemoMan;

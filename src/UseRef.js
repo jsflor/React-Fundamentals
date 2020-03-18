@@ -1,24 +1,5 @@
 import React, { useRef } from 'react'
-
-const Header = () => {
-    const styles = {
-        background: 'linear-gradient(20deg, #6813cb, #2575fc)',
-        textAlign: 'center',
-        borderRadius: '0.2em',
-        color: '#FFF',
-        padding: '0.3em',
-        margin: '0.3em',
-        fontSize: '14px'
-    };
-
-    return (
-        <header style={styles}>
-            <h1>
-                Hook useRef
-            </h1>
-        </header>
-    );
-};
+import Header from "./Header";
 
 const UseRef = () => {
     const entrada = useRef();
@@ -28,7 +9,7 @@ const UseRef = () => {
 
     return (
         <div>
-            <Header />
+            <Header title={"Hook useRef"} />
             <input
                 type='text'
                 placeholder='Ingresa tu texto'
