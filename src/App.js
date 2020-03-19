@@ -12,6 +12,8 @@ import ReactMemoMan from "./ReactMemoManuaj";
 import UseCallback from "./UseCallback";
 import UseCallbackDep from "./UseCallbackDependencies";
 import UseMemoPerfomance from "./UseMemoPerformance";
+import CustomHooK from "./CustomHook";
+import CustomHooKHTTP from "./CustomHookHTTP";
 
 const App = () => {
     const [ clicks, setClicks ] = useState(0);
@@ -88,6 +90,10 @@ const App = () => {
             <UseCallbackDep/>
             <hr/>
             <UseMemoPerfomance/>
+            <hr/>
+            <CustomHooK/>
+            <hr/>
+            <CustomHooKHTTP/>
         </div>
     )
 };
