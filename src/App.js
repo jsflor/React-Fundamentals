@@ -1,125 +1,159 @@
-import React, { useState } from 'react'
-import Header from "./Header";
-import UseEffect from "./UseEffect";
-import UseLayoutEffect from "./UseLayoutEffect ";
-import UseContext from "./UseContext ";
-import UseRef from "./UseRef";
-import Debounce from "./Debounce";
-import UseImperativeHandle from "./UseImperativeHandle";
-import UseReducer from "./UseReducer ";
-import Memo from "./ReactMemo";
-import ReactMemoMan from "./ReactMemoManuaj";
-import UseCallback from "./UseCallback";
-import UseCallbackDep from "./UseCallbackDependencies";
-import UseMemoPerfomance from "./UseMemoPerformance";
-import CustomHooK from "./CustomHook";
-import CustomHooKHTTP from "./CustomHookHTTP";
+import React from 'react';
+import { BrowserRouter, Route, NavLink, Link, Switch , Redirect } from 'react-router-dom';
 
-const App = () => {
-    const [ clicks, setClicks ] = useState(0);
-    const [ isActive, setActive ] = useState(false);
-    /*const [ state, setState ] = useState({
-        clicks: 0,
-        title: ''
-    });*/
+const Hola = () => (
+    <h1>Hola</h1>
+);
 
-    const addClicks = () => {
-        setClicks(clicks + 1)
-    };
-    const toggle = () => {
-        setActive(!isActive)
-    };
-    /*const merge = (nextState) => {
-        setState({
-            ...state,
-            ...nextState
-        })
-    };
-    const addClicks = () => {
-        merge({
-            clicks: state.clicks + 1
-        })
-    };
-    const handleInput = (e) => {
-        const title = e.target.value
-        merge({
-            title
-        })
-    };*/
+const Productos = (props) => (
+    <div>
+        <h1>Productos</h1>
+        <Link to='/productos/gamers'>Gamers</Link>
+        <Link to='/productos/hogar'>Hogar</Link>
+    </div>
+);
+
+const Home = (props) => (
+    <h1>Home</h1>
+);
+
+const ProductosCategoria = ({ match }) => {
+    console.log(match);
+
     return (
         <div>
-            { isActive && <Header title={"Hook useState"} /> }
-            <button onClick={addClicks}>
-                Clicks ({ clicks })
-            </button>
-            <button onClick={toggle}>
-                { isActive ? 'Desactivar' : 'Activar' }
-            </button>
-            {
-                /*<input
-                    type="text"
-                    value={state.title}
-                    onChange={handleInput}
-                />
-                <button onClick={addClicks}>
-                Clicks ({ state.clicks })
-                </button>
-                <h3>{ state.title }</h3>*/
-            }
-            <hr/>
-            <UseEffect/>
-            <hr/>
-            <UseLayoutEffect/>
-            <hr/>
-            <UseContext/>
-            <hr/>
-            <UseRef/>
-            <hr/>
-            <Debounce/>
-            <hr/>
-            <UseImperativeHandle/>
-            <hr/>
-            <UseReducer/>
-            <hr/>
-            <Memo/>
-            <hr/>
-            <ReactMemoMan/>
-            <hr/>
-            <UseCallback/>
-            <hr/>
-            <UseCallbackDep/>
-            <hr/>
-            <UseMemoPerfomance/>
-            <hr/>
-            <CustomHooK/>
-            <hr/>
-            <CustomHooKHTTP/>
+            <h1>Categoria: { match.params.categoria }</h1>
         </div>
     )
 };
 
-// class App extends Component {
-//   state = {
-//     clicks: 0
-//   }
+const Ropa = ({ location}) => {
+    console.log(location);
 
-//   addClicks = () => {
-//     this.setState(state => ({
-//       clicks: state.clicks + 1
-//     }))
-//   }
+    const queries = new URLSearchParams(location.search);
+    const color = queries.get('color');
+    const talla = queries.get('talla');
 
-//   render () {
-//     const { clicks } = this.state
-//     return (
-//       <div>
-//         <Header />
-//         <button onClick={this.addClicks}>
-//           Clicks ({ clicks })
-//         </button>
-//       </div>
-//     )
-//   }
-// }
+    return (
+        <div>
+            <h1>Ropa</h1>
+            <div>
+                Color: { color }
+            </div>
+            <div>
+                Talla: { talla }
+            </div>
+        </div>
+    )
+};
+
+const Login = ({ location }) => {
+
+    if (location.state) {
+        return <h2>{ location.state.message }</h2>
+    }
+
+    return (
+        <h1>Login</h1>
+    )
+};
+
+const isAuth = false;
+
+const Perfil = () => {
+    return isAuth
+        ? <h2>Bienvenido a tu perfil</h2>
+        : <Redirect to={{
+            pathname: '/login',
+            state: {
+                message: 'Debes de hacer login para acceder a tu perfil'
+            }
+        }} />
+};
+
+const NavegacionImperativa = ({ history }) => {
+    console.log(history);
+
+    return (
+        <div>
+            <button onClick={history.goBack}>
+                Atras
+            </button>
+            <button onClick={history.goForward}>
+                Adelante
+            </button>
+            <button onClick={() => {
+                history.go(-2)
+            }}>
+                Go 2
+            </button>
+            <button onClick={() => {
+                history.replace('/ropa')
+            }}>
+                GO ROPA
+            </button>
+        </div>
+    )
+};
+
+const navStyles = {
+    display: 'flex',
+    justifyContent: 'space-around'
+};
+
+const NavActive = {
+    color: 'orangered'
+};
+
+const Navegation = () => (
+    <nav style={navStyles}>
+        <NavLink
+            to='/'
+            exact
+            activeStyle={NavActive}
+        >
+            Home
+        </NavLink>
+        <NavLink
+            to='/hola'
+            activeClassName='navActive'
+        >
+            Hola
+        </NavLink>
+        <NavLink
+            to='/productos'
+            activeStyle={NavActive}
+        >
+            Productos
+        </NavLink>
+        <NavLink
+            to='/ropa'
+            activeStyle={NavActive}
+        >
+            Ropa
+        </NavLink>
+        <NavLink to='/perfil' activeStyle={NavActive}>Perfil</NavLink>
+        <NavLink to='/login' activeStyle={NavActive}>Login</NavLink>
+    </nav>
+);
+
+const App = () => {
+    return (
+        <BrowserRouter>
+            <Switch>
+                <Navegation />
+                <Route render={NavegacionImperativa} />
+                <Route path='/' exact render={Home} />
+                <Route path='/hola' render={Hola} />
+                <Route path='/productos' exact render={Productos} />
+                <Route path='/productos/:categoria/:id?' render={ProductosCategoria} />
+                <Route path='/ropa' render={Ropa} />
+                <Route path='/login' render={Login} />
+                <Route path='/perfil' render={Perfil} />
+                <Redirect from='/p' to='/perfil' />
+            </Switch>
+        </BrowserRouter>
+    )
+};
 
 export default App;
